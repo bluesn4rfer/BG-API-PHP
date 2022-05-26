@@ -1,5 +1,5 @@
 <?php
-	function isAdmin($user_id){
+	function hasLicense($user_id){
 		global $mysql_connection;
 
 		if(!$user_id){
