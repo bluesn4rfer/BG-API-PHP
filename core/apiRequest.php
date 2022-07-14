@@ -4,6 +4,7 @@
         public $action = null;
         public $args = array();
         public $body = null;
+        public $json = null;
         
         function ApiRequest(){
             if(array_key_exists('PATH_INFO', $_SERVER)){
@@ -29,17 +30,10 @@
 
             $fh = fopen('php://input','r');
             $this->body = stream_get_contents($fh);
-        }
 
-        function isValidAction(){
-            if(file_exists("modules/".$this->module."/".$this->action.".php")){
-                return true;
+            if($this->body){
+                $this->json = json_decode($this->body, false);
             }
-            return false;
-        } 
-
-        function execute(){
-            require("modules/".$this->module."/".$this->action.".php");
         }
     }
 ?>

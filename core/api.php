@@ -1,26 +1,33 @@
 <?php
-    require("core/apiRequest.php");
-    require("core/apiResponse.php");
+    require_once("apiRequest.php");
+    require_once("apiResponse.php");
 
     class Api {       
-        public $request = null;
-        public $response = null;
+        public static $request = null;
+        public static $response = null;
 
         function Api(){
             // SETUP REQUEST / RESPONSE
-            $this->request = new ApiRequest();
-            $this->response = new ApiResponse();
+            self::$request = new ApiRequest();
+            self::$response = new ApiResponse();
         }
 
-        function execute(){
+        public static function execute(){
             // CHECK IF ACTION IS VALID
-            if(!$this->request->isValidAction()){
-                $this->response->setResults(false,"Invalid or no action specified");
-                $this->response->display();
+            if(!self::isValidAction()){
+                self::$response->setResults(false,"Invalid or no action specified");
+                return;
             }
             
             // RUN API ACTION
-            $this->request->execute();
+            require("modules/".self::$request->module."/".self::$request->action.".php");
         }
+
+        public static function isValidAction(){
+            if(file_exists("modules/".self::$request->module."/".self::$request->action.".php")){
+                return true;
+            }
+            return false;
+        } 
     }
 ?>
