@@ -1,60 +1,98 @@
 <?php
-	// INCLUDE CORE FILES
-	require_once("config.php");
-	require_once("core/db.php");
-	require_once("core/log.php");
-	require_once("core/api.php");
 
-	// CONFIGURE SHOW PHP ERRORS (SHOULD BE FALSE IN PRODUCTION)
-	if($showPhpErrors){
-		ini_set('display_errors', 1);
-		ini_set('display_startup_errors', 1);
-		error_reporting(E_ALL);
+require(__DIR__ . '/vendor/autoload.php');
+
+db()->connect('localhost', 'api_db', 'api_db', '2iJL7OiAP5n398nj');
+
+app()->get('/', function () {
+	response()->page('./welcome.html');
+});
+
+app()->get('/words', function(){
+	$words = db()->select('words')->all();
+
+	response()->json([
+		'success' => true,
+		'message' => 'Read words',
+		'data' => $words
+	]);
+});
+
+app()->post('/words', function(){	
+	// Get raw body & convert to json
+	$json = file_get_contents('php://input');
+	$data = json_decode($json);
+	if($data === NULL){
+		response()->json([
+			'success' => false,
+			'message' => 'Expecting array of strings'
+		]);
 	}
 
-	new Db($dbServer, $dbDatabase, $dbUsername, $dbPassword);
-	new Log();	
-	new Api();
-
-	// CHECK MYSQL CONNECTION
-	if (!Db::isConnected()) {
-		Api::$response->setResults(false,"Database connection failed: " . Db::connectError());
-	}
-	else{
-		// LOG REQUEST
-		Log::info(Api::$request->body);
-
-		// EXECUTE API CALL
-		Api::execute();
-
-		// LOG RESPONSE
-		if(Api::$request->module != "logs"){
-			Log::info(json_encode(Api::$response));
+	foreach($data as $word){
+		if(gettype($word) == "string"){
+			db()->insert('words')->params([
+				"word" => $word
+			])->execute();
 		}
 	}
-	
-	// DISPLAY API RESULTS
-	Api::$response->display();
 
-	// DISCONNECT MYSQL
-	Db::disconnect();
+	//db()->insert('words')->params($data)->execute();
+	//$data['id'] = $db->lastInsertId();
 
-	// // CHECK IF MODULE REQUIRES AUTHENTICATION
-	// if($modules[$action] != 'public'){
-	// 	$user_id = $_REQUEST['user_id'];
-	// 	$session = $_REQUEST['session'];
+	$words = db()->select('words')->all();
 
-	// 	if(!isAuthenticated($user_id, $session)){
-	// 		$api->response->setResults(false,"Action requires a valid session");
-	// 		$api->response->display();
-	// 	}
+	response()->json([
+		'success' => true,
+		'message' => 'Created words',
+		'data' => $words
+	]);
+});
 
-	// 	// CHECK IF MODULE REQUIRES ADMIN
-	// 	if($moduless[$action] == 'admin'){
-	// 		if(!isAdmin($user_id)){
-	// 			$api->response->setResults(false,"Action requires admin");
-	// 			$api->response->display();
-	// 		}
-	// 	}
-	// }
-?>
+// app()->put('/words/{id}', function($id){
+// 	$data = request()->get(['word']);
+// 	$data['id'] = $id;
+
+// 	response()->json([
+// 		'success' => true,
+// 		'message' => 'Word updated',
+// 		'data' => $data
+// 	]);
+// });
+
+app()->put('/words', function(){
+	// Get raw body & convert to json
+	$json = file_get_contents('php://input');
+	$data = json_decode($json);
+	if($data === NULL){
+		response()->json([
+			'success' => false,
+			'message' => 'Expecting string or array of strings'
+		]);
+	}
+
+	response()->json([
+		'success' => true,
+		'message' => 'Updated words',
+		'data' => $data
+	]);
+});
+
+// app()->delete('/words/{id}', function($id){
+// 	response()->json([
+// 		'success' => true,
+// 		'message' => 'Word deleted',
+// 		'data' => $id
+// 	]);
+// });
+
+app()->delete('/words', function($id){
+	response()->json([
+		'success' => true,
+		'message' => 'Deleted words',
+		'data' => $id
+	]);
+});
+
+app()->run();
+
