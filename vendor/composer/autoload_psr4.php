@@ -9,5 +9,5 @@ return array(
     'Psr\\Log\\' => array($vendorDir . '/psr/log/Psr/Log'),
     'Leaf\\Http\\' => array($vendorDir . '/leafs/http/src'),
     'Leaf\\Helpers\\' => array($vendorDir . '/leafs/password/src'),
-    'Leaf\\' => array($vendorDir . '/leafs/anchor/src', $vendorDir . '/leafs/exception/src', $vendorDir . '/leafs/leaf/src', $vendorDir . '/leafs/router/src', $vendorDir . '/leafs/session/src', $vendorDir . '/leafs/form/src', $vendorDir . '/leafs/db/src', $vendorDir . '/leafs/date/src', $vendorDir . '/leafs/auth/src'),
+    'Leaf\\' => array($vendorDir . '/leafs/anchor/src', $vendorDir . '/leafs/auth/src', $vendorDir . '/leafs/date/src', $vendorDir . '/leafs/db/src', $vendorDir . '/leafs/exception/src', $vendorDir . '/leafs/form/src', $vendorDir . '/leafs/leaf/src', $vendorDir . '/leafs/router/src', $vendorDir . '/leafs/session/src'),
 );

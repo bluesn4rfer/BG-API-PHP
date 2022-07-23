@@ -1,32 +1,163 @@
 {
   "openapi": "3.0.2",
   "info": {
-    "title": "bluegunn API - OpenAPI 3.0",
-    "contact": { "email": "ryangunn313@gmail.com" },
-    "license": {
-      "name": "Apache 2.0",
-      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
-    },
-    "version": "0.04"
+    "title": "bluegunn API",
+    "version": "v1.0",
+    "description": "# Overview\nThis API is documented in **OpenAPI format**\n<SecurityDefinitions />"
   },
-  "servers": [{ "url": "/" }],
+  "servers": [
+    { 
+      "url": "https://api.bluegunn.com",
+      "description": "Production server"
+    }
+  ],
   "tags": [
+    {
+      "name": "Authentication"
+    },
     {
       "name": "Words"
     }
   ],
   "paths": {
+    "/auth": {
+      "post": {
+        "tags": ["Authentication"],
+        "summary": "Get Token",
+        "description": "Get authorization token",
+        "operationId": "getToken",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": { 
+                    "type": "string",
+                    "description": "Username",
+                    "required": true,
+                    "example": "admin" 
+                  }, 
+                  "password": { 
+                    "type": "string",
+                    "description": "Password",
+                    "required": true,
+                    "example": "password" 
+                  }
+                }
+              }                          
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": { "type": "boolean", "example": true },
+                    "message": { "type": "string", "example": "Authentication successful" },
+                    "data": { 
+                      "user": { 
+                        "type": "object", 
+                        "properties": {
+                          "created_at": { "type": "string", "example": "2022-07-19 01:03:49" },
+                          "updated_at": { "type": "string", "example": "2022-07-19 01:03:49" },
+                          "username": { "type": "string", "example": "admin" }
+                        }
+                      },
+                      "token": {
+                        "type": "string",
+                        "example": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTgxOTc4MzAsImlzcyI6ImxvY2FsaG9zdCIsImV4cCI6MTY1ODI4NDIzMCwidXNlcl9pZCI6IjEifQ.V8dSzP14TXGOW-5p5_x77xlX-xV9uExCq27GzDYzKMg"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": { 
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": { "type": "boolean", "example": false },
+                    "message": { "type": "string", "example": "Missing username or password" },
+                    "data": { 
+                      "type": "object",  
+                      "example": null
+                    }
+                  }
+                }
+              }
+            }            
+          }
+        },
+        "security": []
+      }
+    },
     "/words": {
+      "get": {
+        "tags": ["Words"],
+        "summary": "Get words",
+        "description": "Returns a list of words",
+        "operationId": "getWords",
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": { "type": "boolean", "example": true },
+                    "message": { "type": "string", "example": "Fetched words" },
+                    "data": { 
+                      "$ref": "#/components/schemas/WordArray"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": { 
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": { "type": "boolean", "example": false },
+                    "message": { "type": "string", "example": "Unknown error" },
+                    "data": { 
+                      "type": "object",  
+                      "example": null
+                    }
+                  }
+                }
+              }
+            }            
+          }
+        },
+        "security": [{ "OAuth2": ["read:words"] }]
+      },
       "post": {
         "tags": ["Words"],
-        "summary": "Create words",
+        "summary": "Create word",
         "description": "Add new words",
-        "operationId": "createWords",
+        "operationId": "createWord",
         "requestBody": {
           "description": "Create new words",
           "content": {
             "application/json": {
-              "schema": { "type": "array", "items": { "type": "string" }, "example": ["dog","cat","bird"] }
+              "schema": { 
+                "$ref": "#/components/schemas/Word"
+              }
             }
           },
           "required": true
@@ -42,29 +173,52 @@
                     "success": { "type": "boolean", "example": true },
                     "message": { "type": "string", "example": "Created words" },
                     "data": { 
-                      "type": "array", 
-                      "items": { "$ref": "#/components/schemas/Word" }, 
-                      "example": [
-                        { "id":1, "word":"dog" },
-                        { "id":2, "word":"cat" },
-                        { "id":3, "word":"bird" },
-                        { "id":4, "word":"fish" }
-                      ] 
+                      "$ref": "#/components/schemas/WordArray"
                     }
                   }
                 }
               }
             }
           },
-          "400": { "description": "Bad Request" }
+          "400": { 
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": { "type": "boolean", "example": false },
+                    "message": { "type": "string", "example": "Expecting array of strings" },
+                    "data": { 
+                      "type": "object",  
+                      "example": null
+                    }
+                  }
+                }
+              }
+            }            
+          }
         },
-        "security": [{ "auth": ["create:words"] }]
-      },       
+        "security": [{ "OAuth2": ["write:words"] }]
+      }  
+    },
+    "/words/{id}": {
       "get": {
         "tags": ["Words"],
-        "summary": "Read words",
+        "summary": "Get word by Id",
         "description": "Returns a list of words",
-        "operationId": "readWords",
+        "operationId": "getWordById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the word",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Id"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "successful operation",
@@ -74,38 +228,75 @@
                   "type": "object",
                   "properties": {
                     "success": { "type": "boolean", "example": true },
-                    "message": { "type": "string", "example": "Read words" },
+                    "message": { "type": "string", "example": "Fetched word" },
                     "data": { 
-                      "type": "array", 
-                      "items": { "$ref": "#/components/schemas/Word" }, 
-                      "example": [
-                        { "id":1, "word":"dog" },
-                        { "id":2, "word":"cat" },
-                        { "id":3, "word":"bird" }
-                      ] 
+                      "$ref": "#/components/schemas/WordArray"
                     }
                   }
                 }
               }
             }
           },
-          "400": { "description": "Bad Request" }
+          "400": { 
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": { "type": "boolean", "example": false },
+                    "message": { "type": "string", "example": "Bad Request" },
+                    "data": { 
+                      "type": "object",  
+                      "example": null
+                    }
+                  }
+                }
+              }
+            }            
+          },
+          "404": { 
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": { "type": "boolean", "example": false },
+                    "message": { "type": "string", "example": "Not Found" },
+                    "data": { 
+                      "type": "object",  
+                      "example": null
+                    }
+                  }
+                }
+              }
+            }            
+          }
         },
-        "security": [{ "auth": ["read:words"] }]
-      },     
+        "security": [{ "OAuth2": ["read:words"] }]
+      },          
       "put": {
         "tags": ["Words"],
-        "summary": "Update words",
-        "description": "Update existing words by Id",
-        "operationId": "updateWords",
+        "summary": "Replace word",
+        "description": "Replace existing word",
+        "operationId": "replaceWordById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the word",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Id"
+            }
+          }
+        ],        
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": { "type": "array", "items": { "$ref": "#/components/schemas/Word" }, 
-                "example": [
-                  { "id":2, "word":"fish" },
-                  { "id":3, "word":"frog" }
-                ] 
+              "schema": { 
+                "$ref": "#/components/schemas/Word"
               }
             }
           },
@@ -120,38 +311,117 @@
                   "type": "object",
                   "properties": {
                     "success": { "type": "boolean", "example": true },
-                    "message": { "type": "string", "example": "Updated words" },
+                    "message": { "type": "string", "example": "Replaced word" },
                     "data": { 
-                      "type": "array", 
-                      "items": { "$ref": "#/components/schemas/Word" }, 
-                      "example": [
-                        { "id":1, "word":"dog" },
-                        { "id":2, "word":"fish" },
-                        { "id":3, "word":"frog" }
-                      ] 
+                      "$ref": "#/components/schemas/WordArray"
                     }
                   }
                 }
               }
             }
           },
-          "400": { "description": "Bad Request" }
+          "400": { 
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": { "type": "boolean", "example": false },
+                    "message": { "type": "string", "example": "Expecting array of objects" },
+                    "data": { 
+                      "type": "object",  
+                      "example": null
+                    }
+                  }
+                }
+              }
+            }            
+          }
         },
-        "security": [{ "auth": ["update:words"] }]
+        "security": [{ "OAuth2": ["write:words"] }]
       },
+      "patch": {
+        "tags": ["Words"],
+        "summary": "Update word",
+        "description": "Update word by Id",
+        "operationId": "updateWordById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the word",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Id"
+            }
+          }
+        ],        
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { 
+                "$ref": "#/components/schemas/Word"  
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": { "type": "boolean", "example": true },
+                    "message": { "type": "string", "example": "Updated word" },
+                    "data": { 
+                      "$ref": "#/components/schemas/WordArray"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": { 
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": { "type": "boolean", "example": false },
+                    "message": { "type": "string", "example": "Expecting array of ids" },
+                    "data": { 
+                      "type": "object",  
+                      "example": null
+                    }
+                  }
+                }
+              }
+            }            
+          }
+        },
+        "security": [{ "OAuth2": ["write:words"] }]
+      },        
       "delete": {
         "tags": ["Words"],
-        "summary": "Delete words",
-        "description": "Delete words by Id",
-        "operationId": "deleteWords",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": { "type": "array", "items": { "type": "integer", "format": "int32" }, "example": [2,3] }
-            }
-          },
-          "required": true
-        },
+        "summary": "Delete word",
+        "description": "Delete word by Id",
+        "operationId": "deleteWordById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the word",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Id"
+            }            
+          }
+        ],        
         "responses": {
           "200": {
             "description": "Successful operation",
@@ -161,51 +431,76 @@
                   "type": "object",
                   "properties": {
                     "success": { "type": "boolean", "example": true },
-                    "message": { "type": "string", "example": "Deleted words" },
+                    "message": { "type": "string", "example": "Deleted word" },
                     "data": { 
-                      "type": "array", 
-                      "items": { "$ref": "#/components/schemas/Word" }, 
-                      "example": [
-                        { "id":1, "word":"dog" },
-                        { "id":4, "word":"fish" }
-                      ] 
+                      "$ref": "#/components/schemas/WordArray" 
                     }
                   }
                 }
               }
             }
           },
-          "400": { "description": "Bad Request" } 
+          "400": { 
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": { "type": "boolean", "example": false },
+                    "message": { "type": "string", "example": "Expecting array of ids" },
+                    "data": { 
+                      "type": "object",  
+                      "example": null
+                    }
+                  }
+                }
+              }
+            }            
+          }
         },
-        "security": [{ "auth": ["delete:words"] }]
-      }      
+        "security": [{ "OAuth2": ["delete:words"] }]
+      } 
     }
   },
   "components": {
-    "schemas": {     
+    "schemas": {
+      "Id": { 
+        "type": "integer", 
+        "format": "int32",
+        "readOnly": true, 
+        "example": 10 
+      }, 
       "Word": {
         "required": ["id","word"],
         "type": "object",
         "properties": {
-          "id": { "type": "integer", "format": "int32", "example": 10 },
-          "word": { "type": "string", "example": "doggie" }
-        }
-      }
-    },
-    "securitySchemes": {
-      "auth": {
-        "type": "oauth2",
-        "flows": {
-          "implicit": {
-            "authorizationUrl": "https://api.bluegunn.com/auth",
-            "scopes": {
-              "write:words": "add, edit, delete words",
-              "read:words": "read words"
-            }
+          "id": { "$ref": "#/components/schemas/Id" },
+          "word": { 
+            "type": "string", 
+            "example": "doggie" 
           }
         }
       },
-      "api_key": { "type": "apiKey", "name": "api_key", "in": "header" }
+      "WordArray": {
+        "type": "array", 
+        "items": { "$ref": "#/components/schemas/Word" }
+      }
+    },
+    "securitySchemes": {
+      "OAuth2": {
+        "type": "oauth2",
+        "flows": {
+          "password": {
+            "tokenUrl": "/token",
+            "scopes": {
+              "read:words": "read words",
+              "write:words": "write words",
+              "delete:words": "delete words"
+            }            
+          }
+        }
+      }
     }
   }
 }
