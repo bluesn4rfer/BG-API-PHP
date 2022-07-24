@@ -20,7 +20,7 @@
     }
   ],
   "paths": {
-    "/auth": {
+    "/token": {
       "post": {
         "tags": ["Authentication"],
         "summary": "Get Token",
@@ -61,17 +61,20 @@
                     "success": { "type": "boolean", "example": true },
                     "message": { "type": "string", "example": "Authentication successful" },
                     "data": { 
-                      "user": { 
-                        "type": "object", 
-                        "properties": {
-                          "created_at": { "type": "string", "example": "2022-07-19 01:03:49" },
-                          "updated_at": { "type": "string", "example": "2022-07-19 01:03:49" },
-                          "username": { "type": "string", "example": "admin" }
+                      "type": "object",
+                      "properties": {
+                        "user": { 
+                          "type": "object", 
+                          "properties": {
+                            "created_at": { "type": "string", "example": "2022-07-19 01:03:49" },
+                            "updated_at": { "type": "string", "example": "2022-07-19 01:03:49" },
+                            "username": { "type": "string", "example": "admin" }
+                          }
+                        },
+                        "token": {
+                          "type": "string",
+                          "example": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTgxOTc4MzAsImlzcyI6ImxvY2FsaG9zdCIsImV4cCI6MTY1ODI4NDIzMCwidXNlcl9pZCI6IjEifQ.V8dSzP14TXGOW-5p5_x77xlX-xV9uExCq27GzDYzKMg"
                         }
-                      },
-                      "token": {
-                        "type": "string",
-                        "example": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTgxOTc4MzAsImlzcyI6ImxvY2FsaG9zdCIsImV4cCI6MTY1ODI4NDIzMCwidXNlcl9pZCI6IjEifQ.V8dSzP14TXGOW-5p5_x77xlX-xV9uExCq27GzDYzKMg"
                       }
                     }
                   }
