@@ -1550,23 +1550,23 @@
         },
         {
             "name": "leafs/cors",
-            "version": "v1.1",
-            "version_normalized": "1.1.0.0",
+            "version": "v1.1.1",
+            "version_normalized": "1.1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/leafsphp/cors.git",
-                "reference": "5a0c77bffe7bba2f7b08b6c9cdd5929f5aa10753"
+                "reference": "10934a7504879ecf9b6f7687926c22a3b5c02ce9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/leafsphp/cors/zipball/5a0c77bffe7bba2f7b08b6c9cdd5929f5aa10753",
-                "reference": "5a0c77bffe7bba2f7b08b6c9cdd5929f5aa10753",
+                "url": "https://api.github.com/repos/leafsphp/cors/zipball/10934a7504879ecf9b6f7687926c22a3b5c02ce9",
+                "reference": "10934a7504879ecf9b6f7687926c22a3b5c02ce9",
                 "shasum": ""
             },
             "require": {
                 "leafs/http": "*"
             },
-            "time": "2022-07-16T14:33:49+00:00",
+            "time": "2022-07-25T22:09:52+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -1598,7 +1598,7 @@
             ],
             "support": {
                 "issues": "https://github.com/leafsphp/cors/issues",
-                "source": "https://github.com/leafsphp/cors/tree/v1.1"
+                "source": "https://github.com/leafsphp/cors/tree/v1.1.1"
             },
             "funding": [
                 {

@@ -24,6 +24,33 @@ CREATE DATABASE /*!32312 IF NOT EXISTS*/ `api_db` /*!40100 DEFAULT CHARACTER SET
 USE `api_db`;
 
 --
+-- Table structure for table `users`
+--
+
+DROP TABLE IF EXISTS `users`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `username` varchar(64) NOT NULL,
+  `password` varchar(64) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `users`
+--
+
+LOCK TABLES `users` WRITE;
+/*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` VALUES (1,'2022-07-19 01:03:49','2022-07-19 01:03:49','mychi.darko','$2y$10$9gZvhrA4yVZYX97DrV4BD.5gwE6OIdcGIQ9zCTIHE6ES7BVo1Ce8m'),(2,'2022-07-19 01:04:27','2022-07-19 01:04:27','mychi.darko','$2y$10$PjEfz7MLybWlGQpyRR8mjOyu5zP.E1EMC92CI5EAj8V6CUJIXtxKu'),(3,'2022-07-19 01:22:33','2022-07-19 01:22:33','mychi.darko','$2y$10$6j2vUgJoPlDUFEoESDHmVuM8fL99m50gT6TAjfD5xe9gazPV8GnP.');
+/*!40000 ALTER TABLE `users` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `words`
 --
 
@@ -56,4 +83,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-07-18 23:00:13
+-- Dump completed on 2022-07-24 14:44:40

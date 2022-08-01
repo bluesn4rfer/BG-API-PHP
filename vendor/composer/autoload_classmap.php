@@ -41,6 +41,8 @@ return array(
     'Aloe\\Package' => $vendorDir . '/leafs/aloe/src/Package.php',
     'App\\Console\\ExampleCommand' => $baseDir . '/app/console/ExampleCommand.php',
     'App\\Controllers\\Controller' => $baseDir . '/app/controllers/Controller.php',
+    'App\\Controllers\\UsersController' => $baseDir . '/app/controllers/UsersController.php',
+    'App\\Controllers\\WordsController' => $baseDir . '/app/controllers/WordsController.php',
     'App\\Database\\Factories\\Factory' => $baseDir . '/app/database/factories/Factory.php',
     'App\\Database\\Factories\\UserFactory' => $baseDir . '/app/database/factories/UserFactory.php',
     'App\\Database\\Seeds\\DatabaseSeeder' => $baseDir . '/app/database/seeds/DatabaseSeeder.php',

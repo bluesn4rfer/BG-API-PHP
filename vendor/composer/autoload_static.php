@@ -430,6 +430,8 @@ class ComposerStaticInitd8e3758d1801f4c34a56ebe427fe9a57
         'Aloe\\Package' => __DIR__ . '/..' . '/leafs/aloe/src/Package.php',
         'App\\Console\\ExampleCommand' => __DIR__ . '/../..' . '/app/console/ExampleCommand.php',
         'App\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/controllers/Controller.php',
+        'App\\Controllers\\UsersController' => __DIR__ . '/../..' . '/app/controllers/UsersController.php',
+        'App\\Controllers\\WordsController' => __DIR__ . '/../..' . '/app/controllers/WordsController.php',
         'App\\Database\\Factories\\Factory' => __DIR__ . '/../..' . '/app/database/factories/Factory.php',
         'App\\Database\\Factories\\UserFactory' => __DIR__ . '/../..' . '/app/database/factories/UserFactory.php',
         'App\\Database\\Seeds\\DatabaseSeeder' => __DIR__ . '/../..' . '/app/database/seeds/DatabaseSeeder.php',

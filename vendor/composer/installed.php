@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '554ce946bd413d08f3854b4be392b0718e23411d',
+        'reference' => 'f9e7e7ef0c66a6a36fbc12e67a80349c17fa303b',
         'name' => 'leafs/mvc',
         'dev' => true,
     ),
@@ -218,12 +218,12 @@
             'dev_requirement' => false,
         ),
         'leafs/cors' => array(
-            'pretty_version' => 'v1.1',
-            'version' => '1.1.0.0',
+            'pretty_version' => 'v1.1.1',
+            'version' => '1.1.1.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../leafs/cors',
             'aliases' => array(),
-            'reference' => '5a0c77bffe7bba2f7b08b6c9cdd5929f5aa10753',
+            'reference' => '10934a7504879ecf9b6f7687926c22a3b5c02ce9',
             'dev_requirement' => false,
         ),
         'leafs/date' => array(
@@ -304,7 +304,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '554ce946bd413d08f3854b4be392b0718e23411d',
+            'reference' => 'f9e7e7ef0c66a6a36fbc12e67a80349c17fa303b',
             'dev_requirement' => false,
         ),
         'leafs/mvc-core' => array(
